@@ -1,0 +1,30 @@
+#Project WAKE UP 
+#LIke a todo app : You will able to set up your add task, sets time 
+#Use eye tracker to see if the user use PHONE, if the user use ohone : play loud noice and when the user phone not in frame , turn off the thing and DOne normal 
+#When the user task is finsihed, the user tick on the sticky note 
+# 2 choices: user writing task without looking at the computreer   or         When the user write code that need to use the computer - detect if there is phone. Or if the user open other thing like instead of using visual studio , then open roblox sound play (warwning sound) + pop up ( like angry faces or something) ( detect switch tab) ( detect if other app open or something) 
+
+
+
+
+#use PyQT /Py side for the visual stuff ( like css animation , must have animation ) 
+# USe Dlinb + Open cv for eye tracking ?? maybe --- detect when phone is cầm bởi user 
+# dectect if another app is oepn or user switched apps ( OS level)
+    
+#bonus thingy: THis also track if user spending time on hackclub + like get time from waka time thing or something like tell the user how much they have spending coding 
+# When the user like update dev log on their project ( the waka time goes down??) --> detect the time change and say to the user like corract you have finsihed coding "x" amount of time 
+# Also add like value like user_slack_off_count ( when the user not focusing on doing there task)
+
+
+
+#Focus : eye tracker , phone detector 
+#Productive: user doing their task but no on computer ( if the user no phone detect goes normal ) if detected : play sound : tell the user to stop 
+
+#must have , saved user info ( like jsut the sticky node: like what text is enter so when the user open the app again , they still ahve their note in it)
+
+#MUST HAVE 
+#Ship a project that helps people stay awake, focused, or productive.   ( CORE IDEAL FINISHED)
+#Must use less than 30% AI.         
+#Include at least one interactive feature, such as a timer, tracker, form, or filter, and explain it in your README.          The sticky node , the user do what task they want to do 
+#Deploy it and include a live link.
+#Submit it to this sidequest while shipping your project
