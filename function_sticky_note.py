@@ -78,4 +78,3 @@ def highlight_note_piority(notes):
 
 def finish_sticky_note(window):
     window.destroy()
-    # return to Main_menu.py  # You can add navigation logic here if needed

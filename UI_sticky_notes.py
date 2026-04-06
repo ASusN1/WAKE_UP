@@ -1,16 +1,5 @@
-#when the user click on the sticky node simple, the app will rederect it to this , and when the user click finish, return 
-#to main menu 
-
-#Hwat must have: Editable title ( todya'focus is auto) sticky_note_title
-#Add icon next the the stickly_note_sitle( to the right )
-#The sticky_note box able to store maxiumum of 5 task 
-#When the user havent enter anything: 
-#Check box + ( tap to add task) ( when the user click on it ), heightlight the check box and text
-#When the user enter a letter on task 1 , task 2 auto appear ( with the check box and tap to add task )
-#then conitnue untrill task 5  ( then no more sticky editable check box aand tap to add task thing)
-#add a highlightter btn ( when the user click on the btn then select a task out of 5, high light the selected task then )
 import tkinter as tk
-from Sticky_note_logic import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, finish_sticky_note
+from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, finish_sticky_note
 
 # Create main window
 window = tk.Tk()

@@ -1,9 +1,0 @@
-{
-  "timer_seconds": 1500,
-  "tasks": [
-    {
-      "text": "hello : D",
-      "completed": true
-    }
-  ]
-}
