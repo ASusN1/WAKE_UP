@@ -31,14 +31,14 @@ saved_paragraph = load_brain_dump_note()
 add_brain_dump_note(box_brain_dump_note, brain_dump_notes, initial_paragraph=saved_paragraph)
 
 #store data
-store_info_btn = tk.Button(window, text ="Save Note", command=lambda: save_brain_dump_note(title_text_bd, brain_dump_notes))
+store_info_btn = tk.Button(window, text ="Save Note", command=lambda: save_brain_dump_note(title_text_bd, brain_dump_notes, note_type=note_type))
 store_info_btn.pack(pady=10)
 
 #don't store data
 do_not_store_info_btn = tk.Button(window, text="Don't Save Note", command=lambda: finish_brain_dump_note(window))
 do_not_store_info_btn.pack(pady=10)
 
-finish_btn = tk.Button(window, text="Finish", command=lambda: (save_brain_dump_note(title_text_bd, brain_dump_notes), finish_brain_dump_note(window)))
+finish_btn = tk.Button(window, text="Finish", command=lambda: (save_brain_dump_note(title_text_bd, brain_dump_notes, note_type=note_type), finish_brain_dump_note(window)))
 finish_btn.pack(pady=10)
 
 note_type= 1 

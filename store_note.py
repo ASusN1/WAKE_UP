@@ -1,7 +1,26 @@
 import json
 import os
 
-def save_notes(board_title_var, notes, priority=None, file_path="notes.json"):
+#This will update where the user will save their note data for easier finding.
+def get_note_directory(note_type):
+    if note_type == 0:  
+        directory = "sticky_note_data"
+    elif note_type == 1:
+        directory = "brain_dump_data"
+    else:     #Will update the feature later ( 1 specical notes ? , like a creator notes for somt? )
+        directory = "other_stuff_data"  # Default to sticky notes
+    
+    # Create directory if it doesn't exist
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    
+    return directory
+
+
+def save_notes(board_title_var, notes, priority=None, note_type=0, file_path="notes.json"):
+    # Get the correct directory based on note type
+    directory = get_note_directory(note_type)
+    file_path = os.path.join(directory, file_path)
 
     stuff_need_to_save = {
         "board_title": board_title_var.get(),
@@ -40,7 +59,11 @@ def load_notes(file_path="notes.json"):
 
 #store the paragrpah and the title of the brain dump notes 
 #
-def save_brain_dump_note(board_title_var, brain_dump_notes, file_path="notes.json"):
+def save_brain_dump_note(board_title_var, brain_dump_notes, note_type=1, file_path="notes.json"):
+    # Get the correct directory based on note type
+    directory = get_note_directory(note_type)
+    file_path = os.path.join(directory, file_path)
+    
     saved_data_bd = load_notes(file_path=file_path)
     if not isinstance(saved_data_bd, dict):
         saved_data_bd = {}
@@ -65,5 +88,3 @@ def load_brain_dump_note(file_path="notes.json"):
     if not isinstance(saved_data_bd, dict):
         return ""
     return saved_data_bd.get("brain_dump_note") or ""
-
-#def unique_stored_note_id():
