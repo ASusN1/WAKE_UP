@@ -1,5 +1,6 @@
 import tkinter as tk
-from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, finish_sticky_note
+from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, finish_sticky_note, get_priority_number
+from store_note import load_notes, save_notes
 
 # Create main window
 window = tk.Tk()
@@ -27,6 +28,8 @@ box_sticky_note.pack_propagate(False)  # keep the frame size (prevents shrinking
 
 notes = []  # To store note entries
 
+add_note(box_sticky_note, notes)
+
 #Hightlight note when the user click on the check box
 highlight_btn = tk.Button(window, text="Hightlight Taks", command=lambda: highlight_note_finished_work(notes))
 highlight_btn.pack(pady=10)
@@ -35,10 +38,16 @@ highlight_btn.pack(pady=10)
 hightlight_btn_piority = tk.Button(window, text="Highlight Piority Task", command=lambda: highlight_note_piority(notes))
 hightlight_btn_piority.pack(pady=10)
 
+#store not 
+store_info_btn = tk.Button(window, text ="Save NOote", command=lambda: save_notes(title_text, notes, get_priority_number(notes)))
+store_info_btn.pack(pady=10)
+
+do_not_store_info_btn = tk.Button(window, text="Don't Save Note", command=lambda: finish_sticky_note(window))
+do_not_store_info_btn.pack(pady=10)
+
 # Finish button
-finish_btn = tk.Button(window, text="Finish", command=lambda: finish_sticky_note(window))
+finish_btn = tk.Button(window, text="Finish", command=lambda: (save_notes(title_text, notes, get_priority_number(notes)), finish_sticky_note(window)))
 finish_btn.pack(pady=10)
 
-add_note(box_sticky_note, notes)
 
 window.mainloop()

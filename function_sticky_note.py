@@ -2,9 +2,21 @@ import tkinter as tk
 
 selected_task = None
 
-def select_task(note_row):
+
+def select_task(row):
     global selected_task
-    selected_task = note_row
+    selected_task = row
+
+
+def get_priority_number(notes):
+    if selected_task is None:
+        return None
+
+    for index, item in enumerate(notes, start=1):
+        if item.get("row") is selected_task:
+            return index
+    return None
+
 
 def sticky_note_title(event, title_frame, title_text, title_label):
     title_entry = tk.Entry(title_frame, font=("Arial", 24))
@@ -22,7 +34,7 @@ def confrim_edit(event, title_entry, title_label, title_text):
 def add_note(box, notes, event=None):
     if len(notes) < 5:  # maximum of 5 tasks
         # create a container "the board" to store the task and the check box
-        note_row = tk.Frame(box, bg="white")
+        note_row = tk.Frame(box, bg="white") #row stuff, when the user use the hihgltihg, this will be ligiht red and the pirority will be update the the row ( like ex, highlight in row 3--> piority = 3 )
         note_row.pack(anchor="w", pady=5, padx=10)
         # remember to add the animation when all check btn is pressed
         check_var = tk.IntVar()

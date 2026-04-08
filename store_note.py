@@ -1,31 +1,39 @@
 import json
+import os
 
-def save_notes(notes):
-    data = []
-    for item in notes: 
-        text = item["note_entry"].get()
-        check_btn = item ["check_btn"].get()
-        data.append({
-            "text": text,
-            "check_btn": check_btn
-        })
+def save_notes(board_title_var, notes, priority=None, file_path="notes.json"):
 
-        with open("notes.json", "w") as f:
-        json.dump(data, f)
+    stuff_need_to_save = {
+        "board_title": board_title_var.get(),
+        "priority": priority,
+        "notes": [],
+    }
 
-def load_notes(box, notes):
+    for note in notes:
+        row = note.get("row")
+        check_btn = note.get("check_btn")
+        check_var = note.get("check_var")
+        entry = note.get("entry")
+
+        note_info = {
+            "row": str(row) if row is not None else "",
+            "check_btn": str(check_btn) if check_btn is not None else "",
+            "check_var": int(check_var.get()) if check_var is not None else 0,
+            "entry": entry.get() if entry is not None else "",
+        }
+        stuff_need_to_save["notes"].append(note_info)
+
+    with open(file_path, "w", encoding="utf-8") as file:
+        json.dump(stuff_need_to_save, file, indent=2)
+
+
+def load_notes(file_path="notes.json"):
+    """Load raw saved JSON data if available."""
+    if not os.path.exists(file_path):
+        return None
+
     try:
-        with open("notes.json", "r") as f:
-            data = json.load(f)
-
-        for note in data:
-            add_note(box, notes)
-
-            notes[-1]["entry"].insert(0, note["text"])
-            notes[-1]["check_var"].set(note["checked"])
-
-    except FileNotFoundError:
-        pass  # first time running, no file yet
-
-#when the user like reopen the app after writgint the stickky node, when click on the sticky node list ( )
-load_notes(box, notes)
+        with open(file_path, "r", encoding="utf-8") as file:
+            return json.load(file)
+    except (OSError, json.JSONDecodeError):
+        return None
