@@ -1,7 +1,7 @@
 import tkinter as tk
 
 selected_task = None
-
+#Later remove 
 
 def select_task(row):
     global selected_task

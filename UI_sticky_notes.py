@@ -38,7 +38,7 @@ highlight_btn.pack(pady=10)
 hightlight_btn_piority = tk.Button(window, text="Highlight Piority Task", command=lambda: highlight_note_piority(notes))
 hightlight_btn_piority.pack(pady=10)
 
-#store not 
+#store note data
 store_info_btn = tk.Button(window, text ="Save NOote", command=lambda: save_notes(title_text, notes, get_priority_number(notes)))
 store_info_btn.pack(pady=10)
 
@@ -49,5 +49,6 @@ do_not_store_info_btn.pack(pady=10)
 finish_btn = tk.Button(window, text="Finish", command=lambda: (save_notes(title_text, notes, get_priority_number(notes)), finish_sticky_note(window)))
 finish_btn.pack(pady=10)
 
+notes_type = 0
 
 window.mainloop()

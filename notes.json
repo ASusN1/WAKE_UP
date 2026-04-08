@@ -1,36 +1,5 @@
 {
-  "board_title": "Today's Focus",
-  "priority": 2,
-  "notes": [
-    {
-      "row": ".!frame2.!frame",
-      "check_btn": ".!frame2.!frame.!checkbutton-1",
-      "check_var": 0,
-      "entry": "Test"
-    },
-    {
-      "row": ".!frame2.!frame2",
-      "check_btn": ".!frame2.!frame2.!checkbutton-2",
-      "check_var": 1,
-      "entry": "Test"
-    },
-    {
-      "row": ".!frame2.!frame3",
-      "check_btn": ".!frame2.!frame3.!checkbutton-3",
-      "check_var": 0,
-      "entry": "2"
-    },
-    {
-      "row": ".!frame2.!frame4",
-      "check_btn": ".!frame2.!frame4.!checkbutton-4",
-      "check_var": 1,
-      "entry": "3"
-    },
-    {
-      "row": ".!frame2.!frame5",
-      "check_btn": ".!frame2.!frame5.!checkbutton-5",
-      "check_var": 1,
-      "entry": ";D"
-    }
-  ]
+  "notes": [],
+  "brain_dump_note_paragraph": "HEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad HEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\nHEllo HELLO TESTING TESTING VErsion 1 version 1 \nALpaha , aalsdadad\n",
+  "brain_dump_title": "Brain Dump Note"
 }
