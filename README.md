@@ -8,7 +8,9 @@
 <br />
 <div align="center">
     <a href="https://github.com/yourusername/WAKE_UP">
-        <img src=" <img width="800" height="438" alt="image" src="https://github.com/user-attachments/assets/6cb0dbe8-64a1-4d25-8b60-b13230b95da2" />
+        <img src=" <img width="800" height="438" alt="image" src="<img width="800" height="438" alt="image" src="https://github.com/user-attachments/assets/ca4a7c38-e6de-466b-bb8b-0bdc38ebb452" />
+           "![Uploading image.png…]()
+ />
       " alt="Project Logo" width="150" height="150"/>
     </a>
     <h3 align="center">WAKE UP - Productivity & Task Management</h3>
