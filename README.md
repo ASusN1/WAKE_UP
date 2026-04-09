@@ -8,7 +8,7 @@
 <br />
 <div align="center">
     <a href="https://github.com/yourusername/WAKE_UP">
-        <img src=" <img width="800" height="438" alt="image" src="<img width="800" height="438" alt="image" src="https://github.com/user-attachments/assets/ca4a7c38-e6de-466b-bb8b-0bdc38ebb452" />
+        <img src=" <img width="800" height="438" alt="image" src="<img width="800" height="438" alt="image" src="[https://github.com/user-attachments/assets/ca4a7c38-e6de-466b-bb8b-0bdc38ebb452](https://github.com/ASusN1/WAKE_UP/blob/13c79f22b4b8bc1811c6c505858a21c824e4f30c/bg_panel_thingy.png)" />
            "![Uploading image.png…]()
  />
       " alt="Project Logo" width="150" height="150"/>
