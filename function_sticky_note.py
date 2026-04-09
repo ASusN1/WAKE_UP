@@ -31,21 +31,26 @@ def confrim_edit(event, title_entry, title_label, title_text):
     title_entry.destroy()  # Destroy the entry widget after the user finish editing
     title_label.pack(side="left", padx=20)  # Show the title again after the user finish editing
 
-def add_note(box, notes, event=None):
+def add_note(box, notes, event=None, initial_text="", initial_checked=0, focus_new=True):
     if len(notes) < 5:  # maximum of 5 tasks
         # create a container "the board" to store the task and the check box
         note_row = tk.Frame(box, bg="white") #row stuff, when the user use the hihgltihg, this will be ligiht red and the pirority will be update the the row ( like ex, highlight in row 3--> piority = 3 )
         note_row.pack(anchor="w", pady=5, padx=10)
         # remember to add the animation when all check btn is pressed
         check_var = tk.IntVar()
+        check_var.set(int(initial_checked))
         check_btn = tk.Checkbutton(note_row, bg="white", variable=check_var)
         check_btn.pack(side="left")
 
         note_entry = tk.Entry(note_row, width=40, bg="white", font=("Arial", 14))
         note_entry.pack(side="left", padx=5)
 
+        if initial_text:
+            note_entry.insert(0, initial_text)
+
         # new stuff just learn: basically the | when click on browser (search bar stuff)
-        note_entry.focus_set()
+        if focus_new:
+            note_entry.focus_set()
         notes.append({
             "row": note_row,
             "check_btn": check_btn,
