@@ -202,12 +202,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-[contributors-shield]: https://img.shields.io/github/contributors/yourusername/WAKE_UP.svg?style=for-the-badge
-[contributors-url]: https://github.com/yourusername/WAKE_UP/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yourusername/WAKE_UP.svg?style=for-the-badge
-[forks-url]: https://github.com/yourusername/WAKE_UP/network/members
-[stars-shield]: https://img.shields.io/github/stars/yourusername/WAKE_UP.svg?style=for-the-badge
-[stars-url]: https://github.com/yourusername/WAKE_UP/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yourusername/WAKE_UP.svg?style=for-the-badge
-[issues-url]: https://github.com/yourusername/WAKE_UP/issues
+[contributors-shield]: https://img.shields.io/github/contributors/ASusN1/WAKE_UP.svg?style=for-the-badge
+[contributors-url]: https://github.com/ASusN1/WAKE_UP/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ASusN1/WAKE_UP.svg?style=for-the-badge
+[forks-url]: https://github.com/ASusN1/WAKE_UP/network/members
+[stars-shield]: https://img.shields.io/github/stars/ASusN1/WAKE_UP.svg?style=for-the-badge
+[stars-url]: https://github.com/ASusN1/WAKE_UP/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ASusN1/WAKE_UP.svg?style=for-the-badge
+[issues-url]: https://github.com/ASusN1/WAKE_UP/issues
 [product-screenshot]: https://via.placeholder.com/800x400?text=WAKE+UP+App+Screenshot
