@@ -1,21 +1,25 @@
 import tkinter as tk 
 from brain_dump_note_function import add_brain_dump_note, brain_dump_note_title, finish_brain_dump_note
-from store_note import load_brain_dump_note, save_brain_dump_note
+from store_note import load_saved_note_data, save_brain_dump_note
 
 class BrainDumpNote:
-    def __init__(self):
+    def __init__(self, mode="create", file_path="notes.json"):
         self.window = tk.Tk()
         self.window.title("Brain Dump Note")
         self.window.geometry("600x720")
 
         self.note_type = 1
         self.brain_dump_notes = [] #to store what user entered
+        self.mode = mode
+        self.file_path = file_path
+        self.saved_data = load_saved_note_data(note_type=self.note_type, file_path=self.file_path) if self.mode == "load" else {}
 
         #Title section
         title_frame_bd = tk.Frame(self.window)
         title_frame_bd.pack(pady=(20, 10), padx=20, anchor="w")
 
-        self.title_text_bd = tk.StringVar(master=self.window, value="Brain Dump Note")
+        initial_title = self.saved_data.get("brain_dump_title") or "Brain Dump Note"
+        self.title_text_bd = tk.StringVar(master=self.window, value=initial_title)
         title_label = tk.Label(title_frame_bd, textvariable=self.title_text_bd, font=("Arial", 24))
         title_label.pack(side="left", padx=20)
 
@@ -30,19 +34,27 @@ class BrainDumpNote:
         box_brain_dump_note.pack(pady=20)
         box_brain_dump_note.pack_propagate(False) # keep the frame size (prevents shrinking)
 
-        saved_paragraph = load_brain_dump_note()
+        saved_paragraph = self.saved_data.get("brain_dump_note", "")
         add_brain_dump_note(box_brain_dump_note, self.brain_dump_notes, initial_paragraph=saved_paragraph)
 
         #store data
-        store_info_btn = tk.Button(self.window, text ="Save Note", command=lambda: save_brain_dump_note(self.title_text_bd, self.brain_dump_notes, note_type=self.note_type))
+        store_info_btn = tk.Button(self.window, text ="Save Note", command=self.save_current_note)
         store_info_btn.pack(pady=10)
 
         #don't store data
         do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=lambda: finish_brain_dump_note(self.window))
         do_not_store_info_btn.pack(pady=10)
 
-        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (save_brain_dump_note(self.title_text_bd, self.brain_dump_notes, note_type=self.note_type), finish_brain_dump_note(self.window)))
+        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), finish_brain_dump_note(self.window)))
         finish_btn.pack(pady=10)
+
+    def save_current_note(self):
+        self.file_path = save_brain_dump_note(
+            self.title_text_bd,
+            self.brain_dump_notes,
+            note_type=self.note_type,
+            file_path=self.file_path,
+        )
 
     def run(self):
         self.window.mainloop()

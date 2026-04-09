@@ -1,8 +1,6 @@
 import tkinter as tk
-import UI_sticky_notes
-import store_note
-import brain_dump_note
 import time_logic
+from main_menu_function_stuff import open_note_with_mode
 
 # Create main window
 window = tk.Tk()
@@ -30,11 +28,14 @@ button_frame = tk.Frame(window)
 button_frame.pack(pady=20)
 
 #enter the sticky notes
-btn_sticky = tk.Button(button_frame, text="Sticky Notes", command=lambda: UI_sticky_notes.StickyNotes().run(), width=15)
+btn_sticky = tk.Button(button_frame, text="Sticky Notes", command=lambda: open_note_with_mode(window, "sticky"), width=15)
 btn_sticky.pack(side="left", padx=10)
 
-btn_brain_dump = tk.Button(button_frame, text="Brain Dump", command=lambda: brain_dump_note.BrainDumpNote().run(), width=15)
+btn_brain_dump = tk.Button(button_frame, text="Brain Dump", command=lambda: open_note_with_mode(window, "brain_dump"), width=15)
 btn_brain_dump.pack(side="left", padx=10)
+
+btn_sticky.bind("<Return>", lambda event: open_note_with_mode(window, "sticky"))
+btn_brain_dump.bind("<Return>", lambda event: open_note_with_mode(window, "brain_dump"))
 
 btn_close_app = tk.Button(button_frame, text="Quit", command=window.destroy, width=15)
 btn_close_app.pack(side="left", padx=10)

@@ -17,13 +17,58 @@ def get_note_directory(note_type):
     return directory
 
 
-def save_notes(board_title_var, notes, priority=None, note_type=0, file_path="notes.json"):
-    # Get the correct directory based on note type
+def get_note_file_path(note_type, file_path="notes.json"):
     directory = get_note_directory(note_type)
-    file_path = os.path.join(directory, file_path)
+    return os.path.join(directory, file_path)
+
+
+def _sanitize_filename(text):
+    clean_chars = []
+    for char in (text or "").strip():
+        if char.isalnum() or char in ("-", "_", " "):
+            clean_chars.append(char)
+    return "".join(clean_chars).strip().replace(" ", "_")
+
+
+def unique_name(title_text, note_type=0, initial_title="", extension=".json"):
+    directory = get_note_directory(note_type)
+    cleaned_title = _sanitize_filename(title_text)
+    cleaned_initial = _sanitize_filename(initial_title)
+
+    use_initial_counter = (not cleaned_title) or ((title_text or "").strip() == (initial_title or "").strip())
+
+    if use_initial_counter:
+        base_name = cleaned_initial or "note"
+        index = 0
+        while True:
+            candidate = f"{base_name}_{index}{extension}"
+            if not os.path.exists(os.path.join(directory, candidate)):
+                return candidate
+            index += 1
+
+    candidate = f"{cleaned_title}{extension}"
+    if not os.path.exists(os.path.join(directory, candidate)):
+        return candidate
+
+    suffix = 1
+    while True:
+        candidate = f"{cleaned_title}_{suffix}{extension}"
+        if not os.path.exists(os.path.join(directory, candidate)):
+            return candidate
+        suffix += 1
+
+
+def save_notes(board_title_var, notes, priority=None, note_type=0, file_path="notes.json"):
+    title_value = board_title_var.get() if board_title_var is not None and hasattr(board_title_var, "get") else ""
+
+    if file_path == "notes.json":
+        file_path = unique_name(title_value, note_type=note_type, initial_title="Today's Focus")
+
+    # Get the correct directory based on note type
+    file_path_abs = get_note_file_path(note_type, file_path)
 
     stuff_need_to_save = {
-        "board_title": board_title_var.get(),
+        "board_title": title_value,
         "priority": priority,
         "notes": [],
     }
@@ -42,8 +87,10 @@ def save_notes(board_title_var, notes, priority=None, note_type=0, file_path="no
         }
         stuff_need_to_save["notes"].append(note_info)
 
-    with open(file_path, "w", encoding="utf-8") as file:
+    with open(file_path_abs, "w", encoding="utf-8") as file:
         json.dump(stuff_need_to_save, file, indent=2)
+
+    return file_path
 
 
 def load_notes(file_path="notes.json"):
@@ -60,11 +107,15 @@ def load_notes(file_path="notes.json"):
 #store the paragrpah and the title of the brain dump notes 
 #
 def save_brain_dump_note(board_title_var, brain_dump_notes, note_type=1, file_path="notes.json"):
+    title_value = board_title_var.get() if board_title_var is not None and hasattr(board_title_var, "get") else ""
+
+    if file_path == "notes.json":
+        file_path = unique_name(title_value, note_type=note_type, initial_title="Brain Dump Note")
+
     # Get the correct directory based on note type
-    directory = get_note_directory(note_type)
-    file_path = os.path.join(directory, file_path)
-    
-    saved_data_bd = load_notes(file_path=file_path)
+    file_path_abs = get_note_file_path(note_type, file_path)
+
+    saved_data_bd = load_notes(file_path=file_path_abs)
     if not isinstance(saved_data_bd, dict):
         saved_data_bd = {}
 
@@ -76,15 +127,24 @@ def save_brain_dump_note(board_title_var, brain_dump_notes, note_type=1, file_pa
 
     saved_data_bd["brain_dump_note"] = paragraph
 
-    if board_title_var is not None and hasattr(board_title_var, "get"):
-        saved_data_bd["brain_dump_title"] = board_title_var.get()
+    saved_data_bd["brain_dump_title"] = title_value
 
-    with open(file_path, "w", encoding="utf-8") as file:
+    with open(file_path_abs, "w", encoding="utf-8") as file:
         json.dump(saved_data_bd, file, indent=2)
 
+    return file_path
 
-def load_brain_dump_note(file_path="notes.json"):
-    saved_data_bd = load_notes(file_path=file_path)
+
+def load_saved_note_data(note_type=0, file_path="notes.json"):
+    file_path = get_note_file_path(note_type, file_path)
+    saved_data = load_notes(file_path=file_path)
+    if not isinstance(saved_data, dict):
+        return {}
+    return saved_data
+
+
+def load_brain_dump_note(note_type=1, file_path="notes.json"):
+    saved_data_bd = load_saved_note_data(note_type=note_type, file_path=file_path)
     if not isinstance(saved_data_bd, dict):
         return ""
     return saved_data_bd.get("brain_dump_note") or ""
