@@ -37,7 +37,7 @@ def add_note(box, notes, event=None, initial_text="", initial_checked=0, focus_n
         note_row = tk.Frame(box, bg="white") #row stuff, when the user use the hihgltihg, this will be ligiht red and the pirority will be update the the row ( like ex, highlight in row 3--> piority = 3 )
         note_row.pack(anchor="w", pady=5, padx=10)
         # remember to add the animation when all check btn is pressed
-        check_var = tk.IntVar()
+        check_var = tk.IntVar(master=note_row)
         check_var.set(int(initial_checked))
         check_btn = tk.Checkbutton(note_row, bg="white", variable=check_var)
         check_btn.pack(side="left")

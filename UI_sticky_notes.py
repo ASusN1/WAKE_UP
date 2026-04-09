@@ -14,17 +14,17 @@ class StickyNotes:
 
         #Title section 
         title_frame = tk.Frame(self.window)
-        title_frame.pack(pady=20, padx=20, anchor="w")
+        title_frame.pack(pady=(20, 10), padx=20, anchor="w")
 
-        title_text = tk.StringVar(value="Today's Focus")
-        title_label = tk.Label(title_frame, textvariable=title_text, font=("Arial", 24))
+        self.title_text = tk.StringVar(master=self.window, value="Today's Focus")
+        title_label = tk.Label(title_frame, textvariable=self.title_text, font=("Arial", 24))
         title_label.pack(side="left", padx=20)
 
         icon_Label = tk.Label(title_frame, text="", font=("Arial", 24))  # will change this later when the user drag icon
         icon_Label.pack(side="left", padx=20)
 
         # Bind click to edit title
-        title_label.bind("<Button-1>", lambda event: sticky_note_title(event, title_frame, title_text, title_label))
+        title_label.bind("<Button-1>", lambda event: sticky_note_title(event, title_frame, self.title_text, title_label))
 
         #the board container
         box_sticky_note = tk.Frame(self.window, width=450, height=400, bg="white", relief="solid", bd=1)
@@ -42,14 +42,14 @@ class StickyNotes:
         hightlight_btn_piority.pack(pady=10)
 
         #store note data
-        store_info_btn = tk.Button(self.window, text ="Save Note", command=lambda: save_notes(title_text, self.notes, get_priority_number(self.notes), note_type=self.notes_type))
+        store_info_btn = tk.Button(self.window, text ="Save Note", command=lambda: save_notes(self.title_text, self.notes, get_priority_number(self.notes), note_type=self.notes_type))
         store_info_btn.pack(pady=10)
 
         do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=lambda: finish_sticky_note(self.window))
         do_not_store_info_btn.pack(pady=10)
 
         # Finish button
-        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (save_notes(title_text, self.notes, get_priority_number(self.notes), note_type=self.notes_type), finish_sticky_note(self.window)))
+        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (save_notes(self.title_text, self.notes, get_priority_number(self.notes), note_type=self.notes_type), finish_sticky_note(self.window)))
         finish_btn.pack(pady=10)
 
     def run(self):
