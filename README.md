@@ -7,18 +7,15 @@
 
 <br />
 <div align="center">
-    <a href="https://github.com/yourusername/WAKE_UP">
-        <img src=" <img width="800" height="438" alt="image" src="<img width="800" height="438" alt="image" src="[https://github.com/user-attachments/assets/ca4a7c38-e6de-466b-bb8b-0bdc38ebb452](https://github.com/ASusN1/WAKE_UP/blob/13c79f22b4b8bc1811c6c505858a21c824e4f30c/bg_panel_thingy.png)" />
-           "![Uploading image.png…]()
- />
-      " alt="Project Logo" width="150" height="150"/>
+        <a href="https://github.com/ASusN1/WAKE_UP">
+        <img src="https://raw.githubusercontent.com/ASusN1/WAKE_UP/main/bg_panel_thingy.png" alt="Project Logo" width="350" height="150"/>
     </a>
     <h3 align="center">WAKE UP - Productivity & Task Management</h3>
     <p align="center">
         A powerful desktop application for managing tasks, brain dumps, and productivity with built-in timer functionality.
         <br />
         <br />
-        <a href="https://github.com/ASusN1/WAKE_UP ><strong>View Project »</strong></a>
+        <a href="https://github.com/ASusN1/WAKE_UP"><strong>View Project »</strong></a>
         <br />
         <br />
         <a href="https://github.com/ASusN1/WAKE_UP/releases/new">Download Release</a>
