@@ -7,10 +7,10 @@ window = tk.Tk()
 window.title("WAKE UP")
 window.geometry("600x750")
 
-# Create a display box at the top
-display_box = tk.Frame(window, width=550, height=400, bg="white", relief="solid", bd=1)
-display_box.pack(pady=20, padx=20)
-display_box.pack_propagate(False)  # keep the frame size (prevents shrinking)
+# Create the board box at the top
+board_box = tk.Frame(window, width=550, height=400, bg="white", relief="solid", bd=1)
+board_box.pack(pady=20, padx=20)
+board_box.pack_propagate(False)  # keep the frame size (prevents shrinking)
 
 # Create timer control frame (timer + start button)
 timer_control_frame = tk.Frame(window)
