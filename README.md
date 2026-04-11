@@ -8,7 +8,7 @@
 <br />
 <div align="center">
         <a href="https://github.com/ASusN1/WAKE_UP">
-        <img src="https://raw.githubusercontent.com/ASusN1/WAKE_UP/visual_art/main/bg_panel_thingy.png" alt="Project Logo" width="350" height="150"/>
+        <img src="https://raw.githubusercontent.com/ASusN1/WAKE_UP/main/visual_art/bg_panel_thingy.png" alt="Project Logo" width="350" height="150"/>
     </a>
     <h3 align="center">WAKE UP - Productivity & Task Management</h3>
     <p align="center">
