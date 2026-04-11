@@ -1,4 +1,5 @@
 import tkinter as tk
+import os
 import time_logic
 from main_menu_function_stuff import open_note_with_mode
 
@@ -41,12 +42,22 @@ start_timer_btn.pack(side="left", padx=10)
 button_frame = tk.Frame(window, bg=WINDOW_BG)
 button_frame.pack(pady=20)
 
+note_maneger_icon = tk.PhotoImage(file=os.path.join(os.path.dirname(__file__), "visual_art", "note_maneger_icon.png"))
+btn_note_maneger = tk.Button(button_frame, image=note_maneger_icon, command=lambda: open_note_with_mode(window, "manager"), bg=BUTTON_BG, activebackground="#6e3c21")
+btn_note_maneger.pack(side="left", padx=10)
+
 #enter the sticky notes
-btn_sticky = tk.Button(button_frame, text="Sticky Notes", command=lambda: open_note_with_mode(window, "sticky"), width=15, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+sticky_note_icon = tk.PhotoImage(file=os.path.join(os.path.dirname(__file__), "visual_art", "sticky note.png"))
+btn_sticky = tk.Button(button_frame, image=sticky_note_icon, command=lambda: open_note_with_mode(window, "sticky"), bg=BUTTON_BG, activebackground="#6e3c21")
 btn_sticky.pack(side="left", padx=10)
 
-btn_brain_dump = tk.Button(button_frame, text="Brain Dump", command=lambda: open_note_with_mode(window, "brain_dump"), width=15, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+brain_dump_icon = tk.PhotoImage(file=os.path.join(os.path.dirname(__file__), "visual_art", "brain dump.png"))
+btn_brain_dump = tk.Button(button_frame, image=brain_dump_icon, command=lambda: open_note_with_mode(window, "brain_dump"), bg=BUTTON_BG, activebackground="#6e3c21")
 btn_brain_dump.pack(side="left", padx=10)
+
+delete_note_icon = tk.PhotoImage(file=os.path.join(os.path.dirname(__file__), "visual_art", "trash_can.png"))
+btn_delete_note = tk.Button(button_frame, image=delete_note_icon, command=lambda: open_note_with_mode(window, "delete"), bg=BUTTON_BG, activebackground="#6e3c21")
+btn_delete_note.pack(side="left", padx=10)
 
 btn_sticky.bind("<Return>", lambda event: open_note_with_mode(window, "sticky"))
 btn_brain_dump.bind("<Return>", lambda event: open_note_with_mode(window, "brain_dump"))
