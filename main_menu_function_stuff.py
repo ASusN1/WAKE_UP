@@ -1,23 +1,29 @@
 import os
 import tkinter as tk
-from tkinter import messagebox
 
 import UI_sticky_notes
 import brain_dump_note
 import store_note
 
+PANEL_BG = "#f4f0e8"
+PANEL_BORDER = "#d4c8b8"
+ACTION_BG = "#d7cc67"
+ACTION_FG = "#2f2a23"
+ACTION_ACTIVE_BG = "#c6bc57"
 
+#Check note type for sticky note or brain dump note --> 0 for sticky note, 1 for brain dump note
 def note_type_from_key(note_key):
 	return 0 if note_key == "sticky" else 1
 
 
+# Get the exiting saved data for each notes
 def open_note(note_key, mode, file_path="notes.json"):
 	if note_key == "sticky":
 		UI_sticky_notes.StickyNotes(mode=mode, file_path=file_path).run()
 	else:
 		brain_dump_note.BrainDumpNote(mode=mode, file_path=file_path).run()
 
-
+# Check for saved notes; if none exist, there is nothing to load.
 def list_saved_note_files(note_type):
 	directory = store_note.get_note_directory(note_type)
 	if not os.path.isdir(directory):
@@ -28,64 +34,90 @@ def list_saved_note_files(note_type):
 	return files
 
 
-def show_load_picker(parent_window, note_key, chooser_window):
+# Close the current note-mode panel if it exists on the parent window
+def destroy_mode_panel(parent_window):
+	existing = getattr(parent_window, "note_mode_panel", None)
+	if existing is not None and existing.winfo_exists():
+		existing.destroy()
+		setattr(parent_window, "note_mode_panel", None)
+
+
+# Open the most recently saved note for the selected note type
+def open_latest_note(note_key, status_var):
 	note_type = note_type_from_key(note_key)
 	saved_files = list_saved_note_files(note_type)
-
 	if not saved_files:
-		messagebox.showinfo("No Saved Note", "No saved note found yet. Opening a new note.")
-		chooser_window.destroy()
-		open_note(note_key, mode="create")
+		status_var.set("No saved notes yet.")
 		return
+	open_note(note_key, mode="load", file_path=saved_files[-1])
 
-	picker = tk.Toplevel(parent_window)
-	picker.title("Select Saved Note")
-	picker.geometry("340x260")
-	picker.transient(parent_window)
-	picker.grab_set()
 
-	tk.Label(picker, text="Choose a saved note file:", font=("Arial", 11)).pack(pady=(12, 8))
+# Show the menu panel that lets the user create, load, or reopen notes.
+def open_note_with_mode(parent_window, note_key):
+	destroy_mode_panel(parent_window)
 
-	list_box = tk.Listbox(picker, width=42, height=8)
-	list_box.pack(padx=12, pady=6, fill="both", expand=True)
+	note_type = note_type_from_key(note_key)
+	saved_files = list_saved_note_files(note_type)
+	note_label = "Sticky Notes" if note_key == "sticky" else "Brain Dump"
+	status_var = tk.StringVar(master=parent_window, value=f"{note_label}: choose an action")
 
-	for name in saved_files:
-		list_box.insert(tk.END, name)
+	panel = tk.Frame(parent_window, bg=PANEL_BG, bd=1, relief="solid", highlightthickness=1, highlightbackground=PANEL_BORDER)
+	panel.place(relx=0.5, rely=0.83, anchor="center")
+	setattr(parent_window, "note_mode_panel", panel)
 
-	if saved_files:
-		list_box.selection_set(0)
+	header = tk.Frame(panel, bg=PANEL_BG)
+	header.pack(fill="x", padx=14, pady=(10, 0))
 
-	def load_selected():
+	tk.Label(header, text=note_label, bg=PANEL_BG, fg="#4d4033", font=("Arial", 11, "bold")).pack(side="left")
+	tk.Button(header, text="X", width=3, command=lambda: destroy_mode_panel(parent_window)).pack(side="right")
+
+	action_row = tk.Frame(panel, bg=PANEL_BG)
+	action_row.pack(padx=14, pady=(8, 8))
+
+	# Load the note selected in the list box.
+	def load_selected(list_box):
 		selection = list_box.curselection()
 		if not selection:
-			messagebox.showinfo("Select File", "Please select a file to load.")
+			status_var.set("Select a saved file first.")
 			return
-
 		selected_file = list_box.get(selection[0])
-		picker.destroy()
-		chooser_window.destroy()
+		destroy_mode_panel(parent_window)
 		open_note(note_key, mode="load", file_path=selected_file)
 
-	button_row = tk.Frame(picker)
-	button_row.pack(pady=(6, 10))
+	load_area = tk.Frame(panel, bg=PANEL_BG)
 
-	tk.Button(button_row, text="Load", width=12, command=load_selected).pack(side="left", padx=6)
-	tk.Button(button_row, text="Cancel", width=12, command=picker.destroy).pack(side="left", padx=6)
+	# Show or hide the saved-file picker inside the mode panel.
+	def toggle_load_area():
+		if not saved_files:
+			status_var.set("No saved notes yet. Use Create.")
+			return
 
-	list_box.bind("<Double-Button-1>", lambda event: load_selected())
+		if load_area.winfo_ismapped():
+			load_area.pack_forget()
+			status_var.set(f"{note_label}: choose an action")
+			return
 
+		for child in load_area.winfo_children():
+			child.destroy()
 
-def open_note_with_mode(parent_window, note_key):
-	chooser = tk.Toplevel(parent_window)
-	chooser.title("Create or Load")
-	chooser.geometry("300x150")
-	chooser.transient(parent_window)
-	chooser.grab_set()
+		list_box = tk.Listbox(load_area, width=34, height=5)
+		list_box.pack(side="left", padx=(0, 8))
+		for name in saved_files:
+			list_box.insert(tk.END, name)
+		list_box.selection_set(0)
 
-	tk.Label(chooser, text="Choose an option:", font=("Arial", 12)).pack(pady=(16, 10))
+		load_btn_col = tk.Frame(load_area, bg=PANEL_BG)
+		load_btn_col.pack(side="left", fill="y")
+		tk.Button(load_btn_col, text="Open", width=8, command=lambda: load_selected(list_box)).pack(pady=(0, 4))
+		tk.Button(load_btn_col, text="Hide", width=8, command=lambda: load_area.pack_forget()).pack()
 
-	button_row = tk.Frame(chooser)
-	button_row.pack(pady=8)
+		load_area.pack(padx=14, pady=(0, 6))
+		status_var.set("Pick a saved note and click Open.")
+		list_box.bind("<Double-Button-1>", lambda _event: load_selected(list_box))
 
-	tk.Button(button_row, text="Create New", width=12, command=lambda: (chooser.destroy(), open_note(note_key, mode="create"))).pack(side="left", padx=6)
-	tk.Button(button_row, text="Load Saved", width=12, command=lambda: show_load_picker(parent_window, note_key, chooser)).pack(side="left", padx=6)
+	tk.Button(action_row, text="Create", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: (destroy_mode_panel(parent_window), open_note(note_key, mode="create"))).pack(side="left", padx=4)
+	tk.Button(action_row, text="Load", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=toggle_load_area).pack(side="left", padx=4)
+	tk.Button(action_row, text="Latest", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: open_latest_note(note_key, status_var)).pack(side="left", padx=4)
+	tk.Button(action_row, text="Cancel", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: destroy_mode_panel(parent_window)).pack(side="left", padx=4)
+
+	tk.Label(panel, textvariable=status_var, bg=PANEL_BG, fg="#6a5b4f", font=("Arial", 9)).pack(pady=(0, 10), padx=14)

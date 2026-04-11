@@ -1,5 +1,5 @@
 import tkinter as tk
-from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, finish_sticky_note, get_priority_number
+from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, get_priority_number
 from store_note import load_saved_note_data, save_notes
 
 WINDOW_BG = "#f7e7bf"
@@ -9,8 +9,15 @@ BUTTON_FG = "#fff4d8"
 
 # Create main window
 class StickyNotes:
-    def __init__(self, mode="create", file_path="notes.json"):
-        self.window = tk.Tk()
+    def __init__(self, mode="create", file_path="notes.json", window=None, on_return=None):
+        self.owns_window = window is None
+        self.window = window if window is not None else tk.Tk()
+        self.on_return = on_return
+
+        if not self.owns_window:
+            for child in self.window.winfo_children():
+                child.destroy()
+
         self.window.title("WAKE UP")
         self.window.geometry("600x750")
         self.window.configure(bg=WINDOW_BG)
@@ -66,11 +73,11 @@ class StickyNotes:
         store_info_btn = tk.Button(self.window, text ="Save Note", command=self.save_current_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         store_info_btn.pack(pady=10)
 
-        do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=lambda: finish_sticky_note(self.window), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+        do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=self.finish_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         do_not_store_info_btn.pack(pady=10)
 
         # Finish button
-        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), finish_sticky_note(self.window)), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), self.finish_note()), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         finish_btn.pack(pady=10)
 
     def save_current_note(self):
@@ -83,7 +90,14 @@ class StickyNotes:
         )
 
     def run(self):
-        self.window.mainloop()
+        if self.owns_window:
+            self.window.mainloop()
+
+    def finish_note(self):
+        if callable(self.on_return):
+            self.on_return(self.window)
+            return
+        self.window.destroy()
 
 if __name__ == "__main__":
     app = StickyNotes()
