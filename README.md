@@ -79,7 +79,7 @@ You can either download the ready-to-use [release executable](https://github.com
 ### Installation
 
 **Option 1: Use the Executable (Recommended)**
-1. Download `WAKE_UP.exe` from the [releases page](https://github.com/ASusN1/WAKE_UP/releases/tag/V1)
+1. Download `WAKE_UP.exe` from the [releases page](https://github.com/ASusN1/WAKE_UP/releases/tag/V1.0000000015A)
 2. Run the executable directly - no installation needed!
 
 **Option 2: Run from Source Code**
