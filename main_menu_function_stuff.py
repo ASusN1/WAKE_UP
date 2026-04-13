@@ -72,6 +72,12 @@ def get_saved_notes_for_delete():
 # Show the menu panel that lets the user create, load, or reopen notes.
 def open_note_with_mode(parent_window, note_key):
 	destroy_mode_panel(parent_window)
+#preven pop up when the user open the note, it will directly open the note without show the main menu 
+	if note_key in ("sticky", "brain_dump"):
+		# Direct-create flow: close main menu and open the selected note type.
+		parent_window.destroy()
+		open_note(note_key, mode="create")
+		return
 
 	if note_key == "delete":
 		status_var = tk.StringVar(master=parent_window, value="Select a note to delete.")

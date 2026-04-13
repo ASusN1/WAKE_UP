@@ -13,3 +13,5 @@ brain_dump_data/
 sticky_note_data/
 other_stuff_data/
 .git/
+__pycache__/
+*.pyc

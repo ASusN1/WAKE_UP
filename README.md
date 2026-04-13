@@ -74,12 +74,12 @@
 
 ## Getting Started
 
-You can either download the ready-to-use [release executable](https://github.com/ASusN1/WAKE_UP/releases/tag/V1) or set up the project locally to run from the source code.
+You can either download the ready-to-use [release executable](https://github.com/ASusN1/WAKE_UP/releases/tag/untagged-49fdae4980632b1b83b1) or set up the project locally to run from the source code.
 
 ### Installation
 
 **Option 1: Use the Executable (Recommended)**
-1. Download `WAKE_UP.exe` from the [releases page](https://github.com/ASusN1/WAKE_UP/releases/tag/V1)
+1. Download `WAKE_UP.exe` from the [releases page](https://github.com/ASusN1/WAKE_UP/releases/tag/untagged-49fdae4980632b1b83b1)
 2. Run the executable directly - no installation needed!
 
 **Option 2: Run from Source Code**
