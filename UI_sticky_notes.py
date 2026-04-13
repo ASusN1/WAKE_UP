@@ -61,10 +61,6 @@ class StickyNotes:
         else:
             add_note(box_sticky_note, self.notes)
 
-        #Hightlight note when the user click on the check box
-        highlight_btn = tk.Button(self.window, text="Hightlight Taks", command=lambda: highlight_note_finished_work(self.notes), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
-        highlight_btn.pack(pady=10)
-
         #hHighlight btn to show piority 
         hightlight_btn_piority = tk.Button(self.window, text="Highlight Piority Task", command=lambda: highlight_note_piority(self.notes), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         hightlight_btn_piority.pack(pady=10)
