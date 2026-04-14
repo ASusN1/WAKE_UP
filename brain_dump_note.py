@@ -8,8 +8,15 @@ BUTTON_BG = "#8a4f2b"
 BUTTON_FG = "#fff4d8"
 
 class BrainDumpNote:
-    def __init__(self, mode="create", file_path="notes.json"):
-        self.window = tk.Tk()
+    def __init__(self, mode="create", file_path="notes.json", window=None, on_return=None):
+        self.owns_window = window is None
+        self.window = window if window is not None else tk.Tk()
+        self.on_return = on_return
+
+        if not self.owns_window:
+            for child in self.window.winfo_children():
+                child.destroy()
+
         self.window.title("Brain Dump Note")
         self.window.geometry("600x720")
         self.window.configure(bg=WINDOW_BG)
@@ -48,10 +55,10 @@ class BrainDumpNote:
         store_info_btn.pack(pady=10)
 
         #don't store data
-        do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=lambda: finish_brain_dump_note(self.window), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+        do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=self.finish_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         do_not_store_info_btn.pack(pady=10)
 
-        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), finish_brain_dump_note(self.window)), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), self.finish_note()), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         finish_btn.pack(pady=10)
 
     def save_current_note(self):
@@ -63,7 +70,14 @@ class BrainDumpNote:
         )
 
     def run(self):
-        self.window.mainloop()
+        if self.owns_window:
+            self.window.mainloop()
+
+    def finish_note(self):
+        if callable(self.on_return):
+            self.on_return(self.window)
+            return
+        finish_brain_dump_note(self.window)
 
 if __name__ == "__main__":
     app = BrainDumpNote()

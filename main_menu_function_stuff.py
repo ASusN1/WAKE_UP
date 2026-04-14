@@ -23,11 +23,25 @@ def note_type_from_key(note_key):
 
 
 # Get the exiting saved data for each notes
-def open_note(note_key, mode, file_path="notes.json"):
+def open_note(note_key, mode, file_path="notes.json", window=None, on_return=None):
 	if note_key == "sticky":
-		UI_sticky_notes.StickyNotes(mode=mode, file_path=file_path).run()
+		UI_sticky_notes.StickyNotes(mode=mode, file_path=file_path, window=window, on_return=on_return).run()
 	elif note_key == "brain_dump":
-		brain_dump_note.BrainDumpNote(mode=mode, file_path=file_path).run()
+		brain_dump_note.BrainDumpNote(mode=mode, file_path=file_path, window=window, on_return=on_return).run()
+
+
+def clear_window(parent_window):
+	for child in parent_window.winfo_children():
+		child.destroy()
+
+
+def open_note_from_board(note_type, file_name, parent_window, on_return_to_menu):
+	note_key_by_type = {0: "sticky", 1: "brain_dump", 2: "picture_note"}
+	note_key = note_key_by_type.get(note_type)
+	if note_key not in ("sticky", "brain_dump"):
+		return
+	clear_window(parent_window)
+	open_note(note_key, mode="load", file_path=file_name, window=parent_window, on_return=on_return_to_menu)
 
 # Check for saved notes; if none exist, there is nothing to load.
 def list_saved_note_files(note_type):
@@ -49,7 +63,7 @@ def destroy_mode_panel(parent_window):
 
 
 # Open the most recently saved note for the selected note type
-def open_latest_note(note_key, status_var):
+def open_latest_note(note_key, status_var, parent_window, on_return_to_menu):
 	note_type = note_type_from_key(note_key)
 	if note_type is None:
 		status_var.set("This action does not support Latest.")
@@ -58,7 +72,9 @@ def open_latest_note(note_key, status_var):
 	if not saved_files:
 		status_var.set("No saved notes yet.")
 		return
-	open_note(note_key, mode="load", file_path=saved_files[-1])
+	for child in parent_window.winfo_children():
+		child.destroy()
+	open_note(note_key, mode="load", file_path=saved_files[-1], window=parent_window, on_return=on_return_to_menu)
 
 #Basicly this one will check the user data ( sticky note and brain dump note) show the list for the user to delete
 def get_saved_notes_for_delete():
@@ -70,13 +86,14 @@ def get_saved_notes_for_delete():
 
 
 # Show the menu panel that lets the user create, load, or reopen notes.
-def open_note_with_mode(parent_window, note_key):
+def open_note_with_mode(parent_window, note_key, on_return_to_menu=None):
 	destroy_mode_panel(parent_window)
 #preven pop up when the user open the note, it will directly open the note without show the main menu 
 	if note_key in ("sticky", "brain_dump"):
-		# Direct-create flow: close main menu and open the selected note type.
-		parent_window.destroy()
-		open_note(note_key, mode="create")
+		# Direct-create flow: reuse main window and return to menu on finish.
+		for child in parent_window.winfo_children():
+			child.destroy()
+		open_note(note_key, mode="create", window=parent_window, on_return=on_return_to_menu)
 		return
 
 	if note_key == "delete":
@@ -176,7 +193,9 @@ def open_note_with_mode(parent_window, note_key):
 			return
 		selected_file = list_box.get(selection[0])
 		destroy_mode_panel(parent_window)
-		open_note(note_key, mode="load", file_path=selected_file)
+		for child in parent_window.winfo_children():
+			child.destroy()
+		open_note(note_key, mode="load", file_path=selected_file, window=parent_window, on_return=on_return_to_menu)
 
 	load_area = tk.Frame(panel, bg=PANEL_BG)
 
@@ -209,9 +228,15 @@ def open_note_with_mode(parent_window, note_key):
 		status_var.set("Pick a saved note and click Open.")
 		list_box.bind("<Double-Button-1>", lambda _event: load_selected(list_box))
 
-	tk.Button(action_row, text="Create", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: (destroy_mode_panel(parent_window), open_note(note_key, mode="create"))).pack(side="left", padx=4)
+	def open_create_note():
+		destroy_mode_panel(parent_window)
+		for child in parent_window.winfo_children():
+			child.destroy()
+		open_note(note_key, mode="create", window=parent_window, on_return=on_return_to_menu)
+
+	tk.Button(action_row, text="Create", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=open_create_note).pack(side="left", padx=4)
 	tk.Button(action_row, text="Load", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=toggle_load_area).pack(side="left", padx=4)
-	tk.Button(action_row, text="Latest", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: open_latest_note(note_key, status_var)).pack(side="left", padx=4)
+	tk.Button(action_row, text="Latest", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: open_latest_note(note_key, status_var, parent_window, on_return_to_menu)).pack(side="left", padx=4)
 	tk.Button(action_row, text="Cancel", width=10, bg=ACTION_BG, fg=ACTION_FG, activebackground=ACTION_ACTIVE_BG, activeforeground=ACTION_FG, relief="flat", bd=0, command=lambda: destroy_mode_panel(parent_window)).pack(side="left", padx=4)
 
 	tk.Label(panel, textvariable=status_var, bg=PANEL_BG, fg="#6a5b4f", font=("Arial", 9)).pack(pady=(0, 10), padx=14)
