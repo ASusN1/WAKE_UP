@@ -132,3 +132,5 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None):
 
         board_box.drag_note_widgets.append(widget)
 
+def drag_note_to_trash(widget, trash_box, on_delete_note=None):
+    widget.bind("<ButtonRelease-1>", lambda event: check_if_in_trash(event, widget, trash_box, on_delete_note))

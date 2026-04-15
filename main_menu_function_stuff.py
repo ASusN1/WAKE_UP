@@ -123,6 +123,7 @@ def open_note_with_mode(parent_window, note_key, on_return_to_menu=None):
 			candidate_by_label[label] = (note_type, file_name)
 			list_box.insert(tk.END, label)
 
+#Delete the note that the user selected in the list box, then update the list and status message accordingly. If there are no notes left after deletion, show a message to indicate that
 		def delete_selected(_event=None):
 			selection = list_box.curselection()
 			if not selection:
