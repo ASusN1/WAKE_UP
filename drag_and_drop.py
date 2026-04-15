@@ -11,10 +11,6 @@ def when_user_press_note(event, drag_state):
 def when_user_dragging_note(event, widget, parent, drag_state):
     x = widget.winfo_x() + event.x - drag_state["start_x"]
     y = widget.winfo_y() + event.y - drag_state["start_y"]
-    max_x = max(0, parent.winfo_width() - widget.winfo_width())
-    max_y = max(0, parent.winfo_height() - widget.winfo_height())
-    x = max(0, min(x, max_x))
-    y = max(0, min(y, max_y))
     widget.place(x=x, y=y)
 
 
@@ -29,9 +25,22 @@ def when_user_release_note(_event, widget, parent, grid_size):
     snapped_y = max(0, min(snapped_y, max_y))
     widget.place(x=snapped_x, y=snapped_y)
 
-
+#Update the draggable note so the user will be able to drag note outside the board, and when they release it outside
+#snap back to the nearest grid/row
 def make_dragable_note(widget, parent, grid_size=30):
-    drag_state = {"start_x": 0, "start_y": 0}
+    drag_state= {"start_x": 0, "start_y": 0}
+
+    def on_drag_outside(event):
+        root = widget.winfo_toplevel()
+        if str(widget.place_info().get("in", "") != str(root)): 
+            x = widget.winfo_rootx() -root.winfo_rootx() 
+            y = widget.winfo_rooty() -root.winfo_rooty()
+            widget.place(in_=root, x=x, y=y)
+        
+        widget.lift()
+        x = widget.winfo_x() + event.x - drag_state["start_x"]
+        y = widget.winfo_y() + event.y - drag_state["start_y"]
+
     widget.bind("<Button-1>", lambda event: when_user_press_note(event, drag_state))
     widget.bind("<B1-Motion>", lambda event: when_user_dragging_note(event, widget, parent, drag_state))
     widget.bind("<ButtonRelease-1>", lambda event: when_user_release_note(event, widget, parent, grid_size))
@@ -132,5 +141,8 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None):
 
         board_box.drag_note_widgets.append(widget)
 
-def drag_note_to_trash(widget, trash_box, on_delete_note=None):
-    widget.bind("<ButtonRelease-1>", lambda event: check_if_in_trash(event, widget, trash_box, on_delete_note))
+def drag_note_outside_board(note_widget, board_box, on_open_note=None):
+    note_widget.place_forget()
+    if callable(on_open_note):
+        on_open_note()
+    
