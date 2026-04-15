@@ -61,13 +61,13 @@ def _collect_saved_note_items():
     return items
 
 
-def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None):
+def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None, trash_widget=None):
     for child in board_box.winfo_children():
         child.destroy()
 
     saved_note_items = _collect_saved_note_items()
     if not saved_note_items:
-        tk.Label(board_box, text="No saved notes yet.", bg=board_box.cget("bg"), fg="#3d2415", font=("Arial", 16)).pack(pady=20)
+        tk.Label(board_box, text="No notes saved yet. Create one to get started.", bg=board_box.cget("bg"), fg="#3d2415", font=("Arial", 16)).pack(pady=20)
         return
 
     notes_icon_path = {
@@ -131,7 +131,10 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None):
             )
 
         widget.place(x=x, y=y)
-        make_dragable_note(widget, board_box)
+        if trash_widget is not None:
+            drag_note_to_trash(widget, board_box, trash_widget, note_type, item["file_name"])
+        else:
+            make_dragable_note(widget, board_box)
 
         if callable(open_note_callback):
             widget.bind(
@@ -141,8 +144,32 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None):
 
         board_box.drag_note_widgets.append(widget)
 
-def drag_note_outside_board(note_widget, board_box, on_open_note=None):
-    note_widget.place_forget()
-    if callable(on_open_note):
-        on_open_note()
+def drag_note_to_trash(note_widget, board_box, trash_widget, note_type, file_name, grid_size=30):
+    drag_state = {"start_x": 0, "start_y": 0}
+
+    def release_over_trash(event):
+        if trash_widget is None or not trash_widget.winfo_exists():
+            return False
+        target = note_widget.winfo_containing(event.x_root, event.y_root)
+        while target is not None:
+            if target == trash_widget:
+                return True
+            target = target.master
+        return False
+
+    def on_release(event):
+        if release_over_trash(event):
+            file_path = store_note.get_note_file_path(note_type, file_name)
+            try:
+                os.remove(file_path)
+            except OSError:
+                pass
+            note_widget.destroy()
+            return
+
+        when_user_release_note(event, note_widget, board_box, grid_size)
+
+    note_widget.bind("<Button-1>", lambda event: when_user_press_note(event, drag_state))
+    note_widget.bind("<B1-Motion>", lambda event: when_user_dragging_note(event, note_widget, board_box, drag_state))
+    note_widget.bind("<ButtonRelease-1>", on_release)
     
