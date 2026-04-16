@@ -61,9 +61,21 @@ class StickyNotes:
         else:
             add_note(box_sticky_note, self.notes)
 
-        #hHighlight btn to show piority 
-        hightlight_btn_piority = tk.Button(self.window, text="Highlight Piority Task", command=lambda: highlight_note_piority(self.notes), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
-        hightlight_btn_piority.pack(pady=10)
+        # Highlight icon button: keep light background and scale icon to 75%.
+        self.hightlight_btn_piority_icon_base = tk.PhotoImage(file="visual_art/highlighter.png")
+        self.hightlight_btn_piority_icon = self.hightlight_btn_piority_icon_base.zoom(3, 3).subsample(4, 4) 
+        hightlight_btn_piority = tk.Button( 
+            self.window,
+            image=self.hightlight_btn_piority_icon,
+            command=lambda: highlight_note_piority(self.notes),
+            bg=WINDOW_BG,
+            activebackground=WINDOW_BG,
+            borderwidth=0,
+            highlightthickness=0,
+            relief="flat",
+        )
+        # Pin the icon to bottom-right so center action buttons stay visible.
+        hightlight_btn_piority.place(relx=0.98, rely=0.98, anchor="se")
 
         #store note data
         store_info_btn = tk.Button(self.window, text ="Save Note", command=self.save_current_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)

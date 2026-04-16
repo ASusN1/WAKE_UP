@@ -32,7 +32,7 @@ def confrim_edit(event, title_entry, title_label, title_text):
     title_label.pack(side="left", padx=20)  # Show the title again after the user finish editing
 
 def add_note(box, notes, event=None, initial_text="", initial_checked=0, focus_new=True):
-    if len(notes) < 5:  # maximum of 5 tasks
+    if len(notes) < 11:  # maximum of 5 tasks
         # create a container "the board" to store the task and the check box
         note_row = tk.Frame(box, bg="white") #row stuff, when the user use the hihgltihg, this will be ligiht red and the pirority will be update the the row ( like ex, highlight in row 3--> piority = 3 )
         note_row.pack(anchor="w", pady=5, padx=10)
