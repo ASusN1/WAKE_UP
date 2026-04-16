@@ -13,6 +13,10 @@ window = tk.Tk()
 window.title("WAKE UP")
 window.geometry("600x750")
 window.configure(bg=WINDOW_BG)
+icon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "visual_art", "fat_seal.png")
+icon = tk.PhotoImage(file=icon_path)
+window.iconphoto(True, icon)
+window.app_icon = icon
 
 def build_main_menu(_window=None):
     clear_window(window)

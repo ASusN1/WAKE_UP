@@ -4,6 +4,7 @@ import tkinter as tk
 import UI_sticky_notes
 import brain_dump_note
 import picture_note
+import sound_effect_maneger
 import store_note
 
 PANEL_BG = "#f4f0e8"
@@ -25,6 +26,7 @@ def note_type_from_key(note_key):
 
 # Get the exiting saved data for each notes
 def open_note(note_key, mode, file_path="notes.json", window=None, on_return=None):
+	sound_effect_maneger.play_open_note()
 	if note_key == "sticky":
 		UI_sticky_notes.StickyNotes(mode=mode, file_path=file_path, window=window, on_return=on_return).run()
 	elif note_key == "brain_dump":

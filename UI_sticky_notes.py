@@ -1,6 +1,7 @@
 import os
 import tkinter as tk
 from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, get_priority_number
+import sound_effect_maneger
 from store_note import load_saved_note_data, save_notes
 
 WINDOW_BG = "#f7e7bf"
@@ -68,7 +69,7 @@ class StickyNotes:
         hightlight_btn_piority = tk.Button( 
             self.window,
             image=self.hightlight_btn_piority_icon,
-            command=lambda: highlight_note_piority(self.notes),
+            command=lambda: (highlight_note_piority(self.notes), sound_effect_maneger.play_highlighter()),
             bg=WINDOW_BG,
             activebackground=WINDOW_BG,
             borderwidth=0,
@@ -85,7 +86,7 @@ class StickyNotes:
         store_info_btn = tk.Button(
             self.window,
             image=self.save_btn_icon,
-            command=self.save_current_note,
+            command=lambda: (self.save_current_note(), sound_effect_maneger.play_save_note_sound()),
             bg=BUTTON_BG,
             activebackground="#6e3c21",
             borderwidth=0,
@@ -98,7 +99,7 @@ class StickyNotes:
         do_not_store_info_btn.pack(pady=10)
 
         # Finish button
-        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), self.finish_note()), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), sound_effect_maneger.play_close_note(), self.finish_note()), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         finish_btn.pack(pady=10)
 
     def save_current_note(self):

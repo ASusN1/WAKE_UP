@@ -1,5 +1,6 @@
 import os
 import tkinter as tk
+import sound_effect_maneger
 import store_note
 
 
@@ -62,6 +63,10 @@ def _collect_saved_note_items():
 
 
 def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None, trash_widget=None):
+    for widget in getattr(board_box, "drag_note_widgets", []):
+        if widget.winfo_exists():
+            widget.destroy()
+
     for child in board_box.winfo_children():
         child.destroy()
 
@@ -94,6 +99,11 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None, tras
     start_x = 10
     start_y = 10
 
+    root = board_box.winfo_toplevel()
+    root.update_idletasks()
+    board_x = board_box.winfo_x()
+    board_y = board_box.winfo_y()
+
     board_box.drag_note_widgets = []
     open_note_callback = on_open_note
 
@@ -109,7 +119,7 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None, tras
 
         if icon is not None:
             widget = tk.Label(
-                board_box,
+                root,
                 image=icon,
                 text=label_text,
                 compound="top",
@@ -120,7 +130,7 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None, tras
             )
         else:
             widget = tk.Label(
-                board_box,
+                root,
                 text=label_text,
                 bg="#f4e38b",
                 fg="#4d4033",
@@ -130,11 +140,11 @@ def show_saved_notes_on_board(board_box, visual_art_dir, on_open_note=None, tras
                 cursor="fleur",
             )
 
-        widget.place(x=x, y=y)
+        widget.place(x=board_x + x, y=board_y + y)
         if trash_widget is not None:
-            drag_note_to_trash(widget, board_box, trash_widget, note_type, item["file_name"])
+            drag_note_to_trash(widget, root, trash_widget, note_type, item["file_name"])
         else:
-            make_dragable_note(widget, board_box)
+            make_dragable_note(widget, root)
 
         if callable(open_note_callback):
             widget.bind(
@@ -150,15 +160,15 @@ def drag_note_to_trash(note_widget, board_box, trash_widget, note_type, file_nam
     def release_over_trash(event):
         if trash_widget is None or not trash_widget.winfo_exists():
             return False
-        target = note_widget.winfo_containing(event.x_root, event.y_root)
-        while target is not None:
-            if target == trash_widget:
-                return True
-            target = target.master
-        return False
+        left = trash_widget.winfo_rootx()
+        top = trash_widget.winfo_rooty()
+        right = left + trash_widget.winfo_width()
+        bottom = top + trash_widget.winfo_height()
+        return left <= event.x_root <= right and top <= event.y_root <= bottom
 
     def on_release(event):
         if release_over_trash(event):
+            sound_effect_maneger.play_deleting_note_sound()
             file_path = store_note.get_note_file_path(note_type, file_name)
             try:
                 os.remove(file_path)

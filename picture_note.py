@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 
 from function_sticky_note import confrim_edit, sticky_note_title
+import sound_effect_maneger
 from store_note import load_saved_note_data, save_picture_note
 
 WINDOW_BG = "#f7e7bf"
@@ -55,7 +56,7 @@ class PictureNote:
         store_info_btn = tk.Button(
             self.window,
             image=self.save_btn_icon,
-            command=self.save_current_note,
+            command=lambda: (self.save_current_note(), sound_effect_maneger.play_save_note_sound()),
             bg=BUTTON_BG,
             activebackground="#6e3c21",
             borderwidth=0,
@@ -67,7 +68,7 @@ class PictureNote:
         do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=self.finish_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         do_not_store_info_btn.pack(pady=10)
 
-        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), self.finish_note()), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
+        finish_btn = tk.Button(self.window, text="Finish", command=lambda: (self.save_current_note(), sound_effect_maneger.play_close_note(), self.finish_note()), bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         finish_btn.pack(pady=10)
 
     def save_current_note(self):

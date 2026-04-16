@@ -55,9 +55,11 @@
 **Key Features:**
 * **Sticky Notes** - Create, edit, and manage daily task lists with priority highlighting
 * **Brain Dump Notes** - Quickly capture and organize your thoughts and ideas
+* **Picture Notes** - Open image-based notes with framed visual content
 * **Editable Timer** - Set custom countdown timers for focused work sessions
 * **Auto-Save & Load** - Automatically save notes with custom naming based on content
-* **Task Prioritization** - Mark and highlight priority tasks at a glance
+* **Drag & Drop Notes** - Move saved notes on the board and drop to trash to delete
+* **Sound Effects** - Plays feedback sounds for note open/save/close, highlighter, and delete actions
 * **Standalone Executable** - Run as a .exe file without requiring Python installation
 * **Clean GUI** - Simple interface built with Tkinter
 
@@ -74,12 +76,12 @@
 
 ## Getting Started
 
-You can either download the ready-to-use [release executable](https://github.com/ASusN1/WAKE_UP/releases/tag/V1.02A) or set up the project locally to run from the source code.
+You can either download the ready-to-use [release executable](https://github.com/ASusN1/WAKE_UP/releases/tag/V1.3) or set up the project locally to run from the source code.
 
 ### Installation
 
 **Option 1: Use the Executable (Recommended)**
-1. Download `WAKE_UP.exe` from the [releases page](https://github.com/ASusN1/WAKE_UP/releases/tag/V1.02A)
+1. Download `WAKE_UP.exe` from the [releases page](https://github.com/ASusN1/WAKE_UP/releases/tag/V1.3)
 2. Run the executable directly - no installation needed!
 
 **Option 2: Run from Source Code**
@@ -153,7 +155,9 @@ The main interface provides quick access to all features:
 Files are organized by type:
 - `sticky_note_data/` - Sticky note saves
 - `brain_dump_data/` - Brain dump note saves
-- `other_stuff_data/` - Reserved for future notes
+- `other_stuff_data/` - Picture note saves
+- `sound_effect/` - Sound effect files used by the app
+- `visual_art/` - Icons and UI art assets
 
 ### Load Previously Saved Notes
 When creating a new note, you can browse and load previously saved files:
@@ -169,16 +173,22 @@ When creating a new note, you can browse and load previously saved files:
 ```
 WAKE_UP/
 ├── Main_menu.py              # Main entry point
+├── drag_and_drop.py          # Draggable saved-note board and trash-drop delete
 ├── UI_sticky_notes.py        # Sticky notes interface
 ├── brain_dump_note.py        # Brain dump interface
+├── picture_note.py           # Picture note interface
 ├── store_note.py             # Data storage & retrieval
+├── sound_effect_maneger.py   # Sound effect trigger functions
 ├── time_logic.py             # Timer functionality
 ├── main_menu_function_stuff.py # Menu utilities
-├── function_sticky_note.py    # Sticky note logic
+├── function_sticky_note.py   # Sticky note logic
 ├── brain_dump_note_function.py # Brain dump logic
+├── visual_art/               # UI images and icons
+├── sound_effect/             # Sound effect audio files
 ├── sticky_note_data/         # Saved sticky notes
 ├── brain_dump_data/          # Saved brain dumps
-├── other_stuff_data/         # Reserved (for future update)
+├── other_stuff_data/         # Saved picture notes
+├── WAKE_UP.spec              # PyInstaller build config
 └── dist/
     └── WAKE_UP.exe           # Standalone executable
 ```
