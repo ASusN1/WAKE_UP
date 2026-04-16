@@ -1,3 +1,4 @@
+import os
 import tkinter as tk 
 from brain_dump_note_function import add_brain_dump_note, brain_dump_note_title, finish_brain_dump_note
 from store_note import load_saved_note_data, save_brain_dump_note
@@ -51,8 +52,20 @@ class BrainDumpNote:
         add_brain_dump_note(box_brain_dump_note, self.brain_dump_notes, initial_paragraph=saved_paragraph)
 
         #store data
-        store_info_btn = tk.Button(self.window, text ="Save Note", command=self.save_current_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
-        store_info_btn.pack(pady=10)
+        save_icon_path = os.path.join(os.path.dirname(__file__), "visual_art", "save_icon.png")
+        self.save_btn_icon_base = tk.PhotoImage(file=save_icon_path)
+        self.save_btn_icon = self.save_btn_icon_base.zoom(3, 3)
+        store_info_btn = tk.Button(
+            self.window,
+            image=self.save_btn_icon,
+            command=self.save_current_note,
+            bg=BUTTON_BG,
+            activebackground="#6e3c21",
+            borderwidth=0,
+            highlightthickness=0,
+            relief="flat",
+        )
+        store_info_btn.pack(pady=12, ipadx=4, ipady=4)
 
         #don't store data
         do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=self.finish_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)

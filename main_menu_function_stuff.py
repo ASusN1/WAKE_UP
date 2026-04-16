@@ -3,6 +3,7 @@ import tkinter as tk
 
 import UI_sticky_notes
 import brain_dump_note
+import picture_note
 import store_note
 
 PANEL_BG = "#f4f0e8"
@@ -28,6 +29,8 @@ def open_note(note_key, mode, file_path="notes.json", window=None, on_return=Non
 		UI_sticky_notes.StickyNotes(mode=mode, file_path=file_path, window=window, on_return=on_return).run()
 	elif note_key == "brain_dump":
 		brain_dump_note.BrainDumpNote(mode=mode, file_path=file_path, window=window, on_return=on_return).run()
+	elif note_key == "picture_note":
+		picture_note.PictureNote(mode=mode, file_path=file_path, window=window, on_return=on_return).run()
 
 
 def clear_window(parent_window):
@@ -38,7 +41,7 @@ def clear_window(parent_window):
 def open_note_from_board(note_type, file_name, parent_window, on_return_to_menu):
 	note_key_by_type = {0: "sticky", 1: "brain_dump", 2: "picture_note"}
 	note_key = note_key_by_type.get(note_type)
-	if note_key not in ("sticky", "brain_dump"):
+	if note_key not in ("sticky", "brain_dump", "picture_note"):
 		return
 	clear_window(parent_window)
 	open_note(note_key, mode="load", file_path=file_name, window=parent_window, on_return=on_return_to_menu)
@@ -79,7 +82,7 @@ def open_latest_note(note_key, status_var, parent_window, on_return_to_menu):
 #Basicly this one will check the user data ( sticky note and brain dump note) show the list for the user to delete
 def get_saved_notes_for_delete():
 	candidates = []
-	for note_type, label in ((0, "Sticky"), (1, "Brain Dump")):
+	for note_type, label in ((0, "Sticky"), (1, "Brain Dump"), (2, "Picture")):
 		for file_name in list_saved_note_files(note_type):
 			candidates.append((f"[{label}] {file_name}", note_type, file_name))
 	return candidates
@@ -89,7 +92,7 @@ def get_saved_notes_for_delete():
 def open_note_with_mode(parent_window, note_key, on_return_to_menu=None):
 	destroy_mode_panel(parent_window)
 #preven pop up when the user open the note, it will directly open the note without show the main menu 
-	if note_key in ("sticky", "brain_dump"):
+	if note_key in ("sticky", "brain_dump", "picture_note"):
 		# Direct-create flow: reuse main window and return to menu on finish.
 		for child in parent_window.winfo_children():
 			child.destroy()
@@ -170,7 +173,7 @@ def open_note_with_mode(parent_window, note_key, on_return_to_menu=None):
 	if note_type is None:
 		return
 	saved_files = list_saved_note_files(note_type)
-	note_label = "Sticky Notes" if note_key == "sticky" else "Brain Dump"
+	note_label = "Sticky Notes" if note_key == "sticky" else "Brain Dump" if note_key == "brain_dump" else "Picture Note"
 	status_var = tk.StringVar(master=parent_window, value=f"{note_label}: choose an action")
 
 	panel = tk.Frame(parent_window, bg=PANEL_BG, bd=1, relief="solid", highlightthickness=1, highlightbackground=PANEL_BORDER)

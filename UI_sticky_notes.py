@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from function_sticky_note import sticky_note_title, confrim_edit, add_note, highlight_note_finished_work, highlight_note_piority, get_priority_number
 from store_note import load_saved_note_data, save_notes
@@ -78,8 +79,20 @@ class StickyNotes:
         hightlight_btn_piority.place(relx=0.98, rely=0.98, anchor="se")
 
         #store note data
-        store_info_btn = tk.Button(self.window, text ="Save Note", command=self.save_current_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
-        store_info_btn.pack(pady=10)
+        save_icon_path = os.path.join(os.path.dirname(__file__), "visual_art", "save_icon.png")
+        self.save_btn_icon_base = tk.PhotoImage(file=save_icon_path)
+        self.save_btn_icon = self.save_btn_icon_base.zoom(3, 3)
+        store_info_btn = tk.Button(
+            self.window,
+            image=self.save_btn_icon,
+            command=self.save_current_note,
+            bg=BUTTON_BG,
+            activebackground="#6e3c21",
+            borderwidth=0,
+            highlightthickness=0,
+            relief="flat",
+        )
+        store_info_btn.pack(pady=12, ipadx=4, ipady=4)
 
         do_not_store_info_btn = tk.Button(self.window, text="Don't Save Note", command=self.finish_note, bg=BUTTON_BG, fg=BUTTON_FG, activebackground="#6e3c21", activeforeground=BUTTON_FG)
         do_not_store_info_btn.pack(pady=10)

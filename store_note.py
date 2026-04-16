@@ -135,6 +135,36 @@ def save_brain_dump_note(board_title_var, brain_dump_notes, note_type=1, file_pa
     return file_path
 
 
+def save_picture_note(board_title_var, picture_note_state, note_type=2, file_path="notes.json"):
+    title_value = board_title_var.get() if board_title_var is not None and hasattr(board_title_var, "get") else ""
+
+    if file_path == "notes.json":
+        file_path = unique_name(title_value, note_type=note_type, initial_title="Picture Note")
+
+    file_path_abs = get_note_file_path(note_type, file_path)
+
+    saved_data_picture = load_notes(file_path=file_path_abs)
+    if not isinstance(saved_data_picture, dict):
+        saved_data_picture = {}
+
+    image_name = ""
+    if picture_note_state:
+        if isinstance(picture_note_state, dict):
+            image_name = picture_note_state.get("image_name", "") or ""
+        else:
+            first_item = picture_note_state[0] if len(picture_note_state) > 0 else {}
+            if isinstance(first_item, dict):
+                image_name = first_item.get("image_name", "") or ""
+
+    saved_data_picture["picture_note_title"] = title_value
+    saved_data_picture["picture_note_image"] = image_name
+
+    with open(file_path_abs, "w", encoding="utf-8") as file:
+        json.dump(saved_data_picture, file, indent=2)
+
+    return file_path
+
+
 def load_saved_note_data(note_type=0, file_path="notes.json"):
     file_path = get_note_file_path(note_type, file_path)
     saved_data = load_notes(file_path=file_path)
