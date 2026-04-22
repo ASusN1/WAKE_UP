@@ -1,5 +1,51 @@
-<!DOCTYPE html> 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <ti
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WAKE UP Web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+<body>
+    <div class="container">
+        <h1>WAKE UP</h1>
+        <p class="subtitle">testing - first time using flask </p>
+
+        <section class="card">
+            <h2>Sticky Tasks</h2>
+            <form action="/add" method="POST" class="row">
+                <input type="text" name="todo" placeholder="Enter a new task" required>
+                <button type="submit">Add</button>
+            </form>
+            <ul>
+                {% for task in todos %}
+                <li>
+                    <span>{{ task }}</span>
+                    <form action="/delete/{{ loop.index0 }}" method="POST">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Brain Dump</h2>
+            <form action="/brain_dump/add" method="POST">
+                <textarea name="brain_dump" rows="3" placeholder="Write quick thoughts..."></textarea>
+                <button type="submit">Save Note</button>
+            </form>
+            <ul>
+                {% for note in brain_dumps %}
+                <li>
+                    <span>{{ note }}</span>
+                    <form action="/brain_dump/delete/{{ loop.index0 }}" method="POST">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
